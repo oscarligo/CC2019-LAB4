@@ -20,8 +20,6 @@ digraph SyntaxTree {
   n5 -> n9;
   n1 -> n5;
   n0 -> n1;
-  n10 [label="*"];
-  n11 [label="0"];
-  n10 -> n11;
+  n10 [label="0"];
   n0 -> n10;
 }

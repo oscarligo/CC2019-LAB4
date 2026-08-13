@@ -55,6 +55,24 @@ public class Main {
                 System.out.println("Error writing tree: " + e.getMessage());
             }
         }
+
+        ArrayList<ArrayList<String>> tokens = converter.getPostfixExpressions();
+        ThompsonBuilder builder = new ThompsonBuilder();
+        for (int i = 0; i < tokens.size(); i++) {
+            ArrayList<String> postfix = tokens.get(i);
+            System.out.printf("%nBuilding AFN for Expression %d: %s%n", i + 1, String.join("", postfix));
+            try {
+                AFN afn = builder.build(String.join("", postfix));
+                System.out.println("AFN built successfully.");
+                GraphvizExporter.exportToDot(afn, "DFA/expression_" + (i + 1) + ".dot");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error building AFN: " + e.getMessage());
+            }
+        }
+
     }
+
+
+    
 
 }

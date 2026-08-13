@@ -24,18 +24,10 @@ digraph SyntaxTree {
   n0 -> n1;
   n11 [label="*"];
   n12 [label="|"];
-  n13 [label="·"];
-  n14 [label="a"];
-  n13 -> n14;
-  n15 [label=" "];
-  n13 -> n15;
+  n13 [label="a"];
   n12 -> n13;
-  n16 [label="·"];
-  n17 [label=" "];
-  n16 -> n17;
-  n18 [label="b"];
-  n16 -> n18;
-  n12 -> n16;
+  n14 [label="b"];
+  n12 -> n14;
   n11 -> n12;
   n0 -> n11;
 }
