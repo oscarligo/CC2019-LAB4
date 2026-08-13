@@ -1,6 +1,8 @@
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,10 +11,14 @@ public class GraphvizExporter {
     /**
      * Generates a Graphviz DOT file representing the given AFN 
      * @param afn The AFN instance to be exported
-     * @param filePath The path where the DOT file will be saved
+     * @param file The path where the DOT file will be saved
      */
-    public static void exportToDot(AFN afn, String filePath) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+    public static Path exportToDot(AFN afn, Path file) throws IOException {
+        Path output = file.toAbsolutePath();
+        Files.createDirectories(output.getParent());
+
+        try (PrintWriter writer = new PrintWriter(
+                Files.newBufferedWriter(output, StandardCharsets.UTF_8))) {
             writer.println("digraph AFN {");
             writer.println("    rankdir=LR;"); 
             writer.println("    node [shape = circle];");
@@ -33,10 +39,8 @@ public class GraphvizExporter {
             writeTransitions(afn.getStart(), visited, writer);
 
             writer.println("}");
-            System.out.println("DOT file generated: " + filePath);
-        } catch (IOException e) {
-            System.err.println("Error generating DOT file: " + e.getMessage());
         }
+        return output;
     }
 
     private static void markAcceptanceNodes(State current, Set<State> visited, PrintWriter writer) {
@@ -58,7 +62,8 @@ public class GraphvizExporter {
 
         for (Transition t : current.getTransitions()) {
             String label = t.isEpsilon() ? "ε" : String.valueOf(t.getSymbol());
-            writer.println("    " + current.getId() + " -> " + t.getTarget().getId() + " [label=\"" + label + "\"];");
+            writer.println("    " + current.getId() + " -> " + t.getTarget().getId()
+                    + " [label=\"" + label.replace("\\", "\\\\").replace("\"", "\\\"") + "\"];");
             writeTransitions(t.getTarget(), visited, writer);
         }
     }

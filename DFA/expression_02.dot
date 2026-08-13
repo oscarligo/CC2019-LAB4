@@ -1,0 +1,32 @@
+digraph AFN {
+    rankdir=LR;
+    node [shape = circle];
+
+    // Initial State
+    start [shape = point, style = invis];
+    start -> 24;
+
+    // Final States
+    25 [shape = doublecircle];
+
+    // Transitions
+    24 -> 22 [label="ε"];
+    22 -> 16 [label="ε"];
+    16 -> 12 [label="ε"];
+    12 -> 13 [label="ε"];
+    13 -> 17 [label="ε"];
+    17 -> 23 [label="ε"];
+    23 -> 22 [label="ε"];
+    23 -> 25 [label="ε"];
+    16 -> 14 [label="ε"];
+    14 -> 15 [label="a"];
+    15 -> 17 [label="ε"];
+    22 -> 20 [label="ε"];
+    20 -> 18 [label="ε"];
+    18 -> 19 [label="b"];
+    19 -> 18 [label="ε"];
+    19 -> 21 [label="ε"];
+    21 -> 23 [label="ε"];
+    20 -> 21 [label="ε"];
+    24 -> 25 [label="ε"];
+}

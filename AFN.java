@@ -1,3 +1,6 @@
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,4 +38,36 @@ public class AFN {
     public State getEnd() { return end; }
     public Set<Character> getAlphabet() { return alphabet; }
     public Set<State> getStates() { return states; }
+
+    public boolean accepts(String input) {
+        Set<State> current = epsilonClosure(Collections.singleton(start));
+
+        for (char symbol : input.toCharArray()) {
+            Set<State> next = new HashSet<>();
+            for (State state : current) {
+                for (Transition transition : state.getTransitions()) {
+                    if (!transition.isEpsilon() && transition.getSymbol() == symbol) {
+                        next.add(transition.getTarget());
+                    }
+                }
+            }
+            current = epsilonClosure(next);
+        }
+
+        return current.stream().anyMatch(State::isAcceptance);
+    }
+
+    private Set<State> epsilonClosure(Set<State> initial) {
+        Set<State> closure = new HashSet<>(initial);
+        Deque<State> pending = new ArrayDeque<>(initial);
+
+        while (!pending.isEmpty()) {
+            for (Transition transition : pending.remove().getTransitions()) {
+                if (transition.isEpsilon() && closure.add(transition.getTarget())) {
+                    pending.add(transition.getTarget());
+                }
+            }
+        }
+        return closure;
+    }
 }
