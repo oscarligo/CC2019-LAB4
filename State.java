@@ -19,5 +19,6 @@ public class State {
     public int getId() { return id; }
     public boolean isAcceptance() { return isAcceptance; }
     public void setAcceptance(boolean acceptance) { isAcceptance = acceptance; }
+    public void setId(int id) { this.id = id; }
     public List<Transition> getTransitions() { return transitions; }
 }
